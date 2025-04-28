@@ -2551,7 +2551,7 @@ const tests = [
         data: figurideStilData
      },
      {
-        title: "Test de Practica: Biologie",
+        title: "Test de Practica: Biologie (ultimul capitol din carte)",
         subject: "Biologie",
         source: "Biologie.pdf",
         data: biologieQuizData
