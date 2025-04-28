@@ -1,0 +1,450 @@
+/* Study Materials section styling */
+#materials {
+    position: relative;
+    overflow: hidden;
+}
+
+#materials::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(88, 69, 200, 0.1) 0%, transparent 70%);
+    z-index: 0;
+}
+
+#materials::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: -80px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 178, 214, 0.08) 0%, transparent 70%);
+    z-index: 0;
+}
+
+#materials .category-wrapper {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+#materials .category-selector {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 5;
+}
+
+#materials .category-btn {
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: var(--bg-card);
+    border: 1px solid rgba(88, 69, 200, 0.1);
+    color: var(--text-color);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+#materials .category-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(123, 104, 238, 0) 0%,
+        rgba(123, 104, 238, 0.05) 50%,
+        rgba(123, 104, 238, 0) 100%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+#materials .category-btn:hover {
+    transform: translateY(-3px);
+    background: var(--bg-elevated);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+#materials .category-btn:hover::before {
+    transform: translateX(100%);
+}
+
+#materials .category-btn.active {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: 0 8px 20px rgba(88, 69, 200, 0.25);
+}
+
+/* New 3D card layout */
+#materials .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    perspective: 1000px;
+    position: relative;
+    z-index: 2;
+}
+
+#materials .card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: var(--border-glow);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.15),
+        0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+#materials .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.18),
+        0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: rgba(123, 104, 238, 0.3);
+}
+
+#materials .icon {
+    width: 80px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, var(--bg-elevated), var(--bg-card));
+    padding: 20px 10px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#materials .icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-primary);
+    opacity: 0.08;
+}
+
+#materials .icon::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+#materials .card:hover .icon::after {
+    opacity: 1;
+}
+
+#materials .icon svg {
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
+    transition: transform 0.4s ease;
+}
+
+#materials .card:hover .icon svg {
+    transform: scale(1.1);
+}
+
+#materials .content {
+    flex: 1;
+    padding: 25px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    background: linear-gradient(
+        145deg,
+        rgba(26, 26, 36, 0.9),
+        rgba(18, 18, 26, 0.95)
+    );
+}
+
+#materials .content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(88, 69, 200, 0.03)
+    );
+    z-index: -1;
+}
+
+#materials .card h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#materials .card h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 30px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+#materials .card:hover h2::after {
+    width: 45px;
+}
+
+#materials .card p {
+    color: var(--text-light);
+    margin-bottom: 20px;
+    line-height: 1.6;
+    position: relative;
+    flex: 1;
+}
+
+#materials .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    border-top: 1px solid rgba(88, 69, 200, 0.1);
+    padding-top: 16px;
+    transition: all 0.3s ease;
+}
+
+#materials .date {
+    position: relative;
+    padding-left: 20px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+#materials .date::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    opacity: 0.8;
+    box-shadow: 0 0 10px rgba(88, 69, 200, 0.3);
+}
+
+#materials .card-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#materials .view-btn {
+    padding: 8px 20px;
+    border-radius: 30px;
+    background: var(--gradient-primary);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(88, 69, 200, 0.25);
+    transform-style: preserve-3d;
+}
+
+#materials .view-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: all 0.6s ease;
+}
+
+#materials .view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(88, 69, 200, 0.35);
+}
+
+#materials .view-btn:hover::before {
+    left: 100%;
+}
+
+
+
+/* Badge for document type */
+#materials .document-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 10px;
+    background: rgba(0, 178, 214, 0.15);
+    color: var(--tertiary-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+#materials .document-badge svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* Empty state */
+#materials .empty-state {
+    text-align: center;
+    padding: 40px;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    margin: 30px 0;
+    border: 1px dashed rgba(88, 69, 200, 0.2);
+}
+
+#materials .empty-state h3 {
+    color: var(--text-light);
+    margin-bottom: 10px;
+}
+
+#materials .empty-state p {
+    color: var(--text-dim);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 990px) {
+    #materials .cards-container {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #materials .cards-container {
+        grid-template-columns: 1fr;
+        max-width: 450px;
+        margin: 0 auto;
+    }
+    
+    #materials .card {
+        animation: none !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #materials .icon {
+        width: 60px;
+    }
+    
+    #materials .content {
+        padding: 15px;
+    }
+    
+    #materials .card h2 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    #materials .card {
+        animation: none !important;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+    }
+    
+    #materials .card:hover {
+        transform: none !important;
+    }
+    
+    #materials .view-btn:hover {
+        transform: none !important;
+    }
+    
+    #materials .category-btn:hover {
+        transform: none !important;
+    }
+}
+
+/* Class for manually reducing motion */
+.reduce-motion #materials .card,
+.reduce-motion #materials .icon,
+.reduce-motion #materials .view-btn,
+.reduce-motion #materials .category-btn {
+    animation: none !important;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.reduce-motion #materials .card:hover,
+.reduce-motion #materials .view-btn:hover,
+.reduce-motion #materials .category-btn:hover {
+    transform: none !important;
+}
+
+/* Toned-down fade-in animation */
+@keyframes cardFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#materials .card.fade-in {
+    animation: cardFadeIn 0.4s ease forwards;
+}

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniunea Sovietica De Studii - USDS</title>
+    <meta name="description" content="Platforma de Studiu este o platformă modernă pentru învățare online și materiale de studiu">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="materials.css">
+    <link rel="stylesheet" href="videos.css">
+    <link rel="stylesheet" href="contact.css">
+    <link rel="stylesheet" href="modal.css">
+    <link rel="stylesheet" href="hero.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="teste.css">
+    <style>
+        /* Slider styles added directly to index.html */
+        #materials .slider-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 20px 0;
+            margin: 0 auto;
+        }
+
+        #materials .slider-track {
+            display: flex;
+            gap: 30px;
+            width: max-content;
+            will-change: transform;
+            animation: scroll 40s linear infinite;
+            padding: 10px 0;
+        }
+
+        #materials .slider-container:hover .slider-track {
+            animation-play-state: paused;
+        }
+
+        #materials .slider-track .card {
+            flex: 0 0 300px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            animation: none !important;
+            transform: none !important;
+        }
+
+        #materials .slider-track .card:hover {
+            transform: translateY(-5px) scale(1.03) !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18), 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Static grid styles for non-all categories */
+        #materials .static-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+            width: 100%;
+        }
+
+        #materials .static-grid .card {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #materials .static-grid .card:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18), 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-300px * var(--card-count) - 30px * (var(--card-count) - 1)));
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            #materials .slider-track .card,
+            #materials .static-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            #materials .slider-track .card {
+                flex: 0 0 280px;
+            }
+            
+            @keyframes scroll {
+                100% {
+                    transform: translateX(calc(-280px * var(--card-count) - 30px * (var(--card-count) - 1)));
+                }
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            #materials .slider-track .card,
+            #materials .static-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            }
+            
+            #materials .slider-track .card {
+                flex: 0 0 260px;
+            }
+            
+            @keyframes scroll {
+                100% {
+                    transform: translateX(calc(-260px * var(--card-count) - 30px * (var(--card-count) - 1)));
+                }
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #materials .slider-track {
+                animation: none;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            #materials .slider-track .card {
+                scroll-snap-align: start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="logo-text">Uniunea  de <span>Studii</span></span>
+        </div>
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#materials" class="active">Materiale</a></li>
+                <li><a href="#videos">Videoclipuri</a></li>
+                <li><a href="#quizzes">Exerciții</a></li>
+                <li><a href="#vip-area" class="vip-link">Ajutor</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <div class="hero-bg">
+            <div class="animated-shape shape1"></div>
+            <div class="animated-shape shape2"></div>
+            <div class="animated-shape shape3"></div>
+            <!-- Add particles -->
+            <div class="particles">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Uniunea De Studii</h1>
+            <p class="hero-subtitle">Proiect facut pentru a forma o cooperare intre elevii clasei a 9-a</p>
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <span>Materiale PDF</span>
+                </div>
+                <div class="hero-feature">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <span>Videoclipuri si Podcasturi</span>
+                </div>
+                <div class="hero-feature">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <span>Teste Practice</span>
+                </div>
+            </div>
+            <div class="hero-cta">
+                <a href="#materials" class="btn-primary">Explorează Materialele</a>
+                <a href="#videos" class="btn-secondary">Vizionează Videoclipuri</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="visual-container">
+                <div class="visual-card">
+                    <div class="visual-card-content">
+                        <div class="visual-card-title">Biologie</div>
+                        <div class="visual-card-text">Principii și concepte de bază explicate cu exemple clare și diagrame interactive.</div>
+                        <div class="visual-card-meta">
+                            <span>4.8 ★</span>
+                            <span>25 min</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-content">
+                        <div class="visual-card-title">Istorie</div>
+                        <div class="visual-card-text">Context, tabele, rezumate si multe informatii ajutatoare</div>
+                        <div class="visual-card-meta">
+                            <span>4.6 ★</span>
+                            <span>15 min</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-content">
+                        <div class="visual-card-title">Limba si Literatura Romana</div>
+                        <div class="visual-card-text">Figuri de stil si altele.</div>
+                        <div class="visual-card-meta">
+                            <span>4.9 ★</span>
+                            <span>20 min</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-content">
+                        <div class="visual-card-title">Soluții Matematice</div>
+                        <div class="visual-card-text">Abordare pas cu pas pentru rezolvarea eficientă a problemelor complexe.</div>
+                        <div class="visual-card-meta">
+                            <span>4.7 ★</span>
+                            <span>18 min</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="floating-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <main>
+        <section id="materials" class="section">
+            <h1>Materiale de Studiu</h1>
+            <div class="category-wrapper">
+                <div class="category-selector">
+                    <button class="category-btn active" data-category="all">Toate Materialele</button>
+                    <button class="category-btn" data-category="history">Istorie</button>
+                    <button class="category-btn" data-category="biology">Biologie</button>
+                    <button class="category-btn" data-category="romana">Română</button>
+                </div>
+            </div>
+            <!-- Slider will be shown for "all" category -->
+            <div class="slider-container" id="all-materials-slider">
+                <div class="slider-track">
+                    <!-- History documents -->
+                    <div class="card" data-category="history">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32">
+                                <path fill="#5845C8" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
+                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <div class="content">
+                            <div class="document-badge">
+                                <svg viewBox="0 0 24 24" width="14" height="14">
+                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
+                                </svg>
+                                <span>PDF</span>
+                            </div>
+                            <h2>Primul Război Mondial</h2>
+                            <p>Studiu complet despre Primul Război Mondial, cauzele sale, evenimentele majore și impactul global.</p>
+                            <div class="card-footer">
+                                <span class="date">Istorie</span>
+                                <div class="card-actions">
+                                    <a href="Primul Razboi Modnial.pdf" class="view-btn" target="_blank">Descarcă</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Biology documents -->
+                    <div class="card" data-category="biology">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32">
+                                <path fill="#4CAF50" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
+                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <div class="content">
+                            <div class="document-badge">
+                                <svg viewBox="0 0 24 24" width="14" height="14">
+                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
+                                </svg>
+                                <span>PDF</span>
+                            </div>
+                            <h2>Organismele si Ecosistemul</h2>
+                            <p>Notite pentru ultimul capitol din cartea de Biologie.</p>
+                            <div class="card-footer">
+                                <span class="date">Biologie</span>
+                                <div class="card-actions">
+                                    <a href="Biologie.pdf" class="view-btn" target="_blank">Descarcă</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Romanian documents -->
+                    <div class="card" data-category="romana">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32">
+                                <path fill="#FF5722" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
+                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <div class="content">
+                            <div class="document-badge">
+                                <svg viewBox="0 0 24 24" width="14" height="14">
+                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
+                                </svg>
+                                <span>PDF</span>
+                            </div>
+                            <h2>Figuri de Stil</h2>
+                            <p>Figuri de stil si altele.</p>
+                            <div class="card-footer">
+                                <span class="date">Română</span>
+                                <div class="card-actions">
+                                    <a href="Figuri de Stil.pdf" class="view-btn" target="_blank">Descarcă</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                    <div class="card" data-category="history">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32">
+                                <path fill="#5845C8" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
+                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <div class="content">
+                            <div class="document-badge">
+                                <svg viewBox="0 0 24 24" width="14" height="14">
+                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
+                                </svg>
+                                <span>PDF</span>
+                            </div>
+                            <h2>Perioada Interbelică</h2>
+                            <p>Analiză a perioadei dintre Primul și Al Doilea Război Mondial, explorând schimbările politice, economice și sociale.</p>
+                            <div class="card-footer">
+                                <span class="date">Istorie</span>
+                                <div class="card-actions">
+                                    <a href="Perioada Interbel1ca.pdf" class="view-btn" target="_blank">Descarcă</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-category="history">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32">
+                                <path fill="#5845C8" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
+                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <div class="content">
+                            <div class="document-badge">
+                                <svg viewBox="0 0 24 24" width="14" height="14">
+                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
+                                </svg>
+                                <span>PDF</span>
+                            </div>
+                            <h2>Relații Interbelice</h2>
+                            <p>Studiu al relațiilor internaționale, tratatelor și dezvoltărilor diplomatice între Războaiele Mondiale.</p>
+                            <div class="card-footer">
+                                <span class="date">Istorie</span>
+                                <div class="card-actions">
+                                    <a href="Relatii Interbel1ce.pdf" class="view-btn" target="_blank">Descarcă</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-category="history">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32">
+                                <path fill="#5845C8" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
+                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <div class="content">
+                            <div class="document-badge">
+                                <svg viewBox="0 0 24 24" width="14" height="14">
+                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
+                                </svg>
+                                <span>PDF</span>
+                            </div>
+                            <h2>Al Doilea Război Mondial</h2>
+                            <p>Examinare detaliată a celui de-Al Doilea Război Mondial, acoperind bătăliile majore, strategiile politice și impactul său de durată asupra istoriei mondiale.</p>
+                            <div class="card-footer">
+                                <span class="date">Istorie</span>
+                                <div class="card-actions">
+                                    <a href="Al doilea Razboi Mondial.pdf" class="view-btn" target="_blank">Descarcă</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Static grids for specific categories (hidden by default) -->
+            <div class="static-grid" id="history-materials" style="display: none;">
+                <!-- History cards will be moved here when category is selected -->
+            </div>
+
+            <div class="static-grid" id="biology-materials" style="display: none;">
+                <!-- Biology cards will be moved here when category is selected -->
+            </div>
+
+            <div class="static-grid" id="romana-materials" style="display: none;">
+                <!-- Romanian cards will be moved here when category is selected -->
+            </div>
+        </section>
+        <h1>Lecții Video</h1>
+        <section id="videos" class="section">
+            <p>Acestea sunt doar ca model, vor fi adaugate altele in curand.</p>
+           
+            <div class="cards-container">
+                <!-- Custom videos will be added here -->
+                <video controls style="max-width:100%;height:auto;margin:16px 0;">
+                    <source src="../video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video controls style="max-width:100%;height:auto;margin:16px 0;">
+                    <source src="../video2.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </section>
+        <h1>Teste Practice</h1>
+      
+
+        <section id="quizzes" class="section">
+            <h1>Teste Practice</h1>
+            <div class="cards-container">
+                <!-- Custom quizzes will be added here -->
+            </div>
+        </section>
+        
+        <section id="vip-area" class="section">
+            <div class="vip-content">
+                <div class="vip-header">
+                    <h1 class="vip-title">Ai Nevoie de Suport Academic Suplimentar?</h1>
+                    <p class="vip-subtitle">Obține ajutor personalizat de la tutori și materiale de studiu exclusive</p>
+                </div>
+                
+              
+                    
+                    <div class="vip-note-block" style="margin-top: 32px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 8px;">
+                      
+                     
+                    </div>
+                    <p style="margin-bottom: 8px; color: #d0d0d8;">Vreti notite si documente asemanatoare cu documentele din site? Contactatine cu subiectul/tema sau cu orice subiect pe care vreti sa il invatati si o sa va trimitem notite si documente personalizate.</p>
+                    <a href="mailto:vvsi4n@gmail.com" style="display: inline-block; background: #51c878; color: #fff; padding: 7px 16px; border-radius: 16px; font-size: 1em; font-weight: 600; margin-top: 8px; text-decoration: none;">vvsi4n@gmail.com</a>
+                </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 USDS</p>
+    </footer>
+
+    <!-- Modal Templates -->
+    <!-- Document Modal -->
+    <div class="modal-overlay document-modal" id="document-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="document-title">Titlul Documentului</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="document-content" id="document-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="modal-overlay video-modal" id="video-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="video-title">Titlul Videoclipului</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="video-container" id="video-container">
+                    <!-- Video will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div class="modal-overlay quiz-modal" id="quiz-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="quiz-title">Titlul Testului</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="quiz-content">
+                <!-- Quiz content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 30) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('nav');
+        
+        menuToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Modal functionality
+        const closeButtons = document.querySelectorAll('.modal-close');
+        const modalOverlays = document.querySelectorAll('.modal-overlay');
+        
+        // Close modal when clicking on overlay or close button
+        modalOverlays.forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    closeAllModals();
+                }
+            });
+        });
+        
+        closeButtons.forEach(button => {
+            button.addEventListener('click', closeAllModals);
+        });
+        
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+        
+        function closeAllModals() {
+            modalOverlays.forEach(overlay => {
+                overlay.classList.remove('active');
+            });
+            
+            // Pause videos when closing modal
+            const videoContainer = document.getElementById('video-container');
+            if (videoContainer) {
+                videoContainer.innerHTML = '';
+            }
+        }
+        
+        // Setup slider functionality
+        function setupSlider() {
+            const sliderTrack = document.querySelector('#materials .slider-track');
+            if (!sliderTrack) return;
+            
+            const cardCount = sliderTrack.children.length;
+            sliderTrack.style.setProperty('--card-count', cardCount);
+            
+            // Clone cards for infinite loop effect
+            const cards = sliderTrack.querySelectorAll('.card');
+            cards.forEach(card => {
+                const clone = card.cloneNode(true);
+                sliderTrack.appendChild(clone);
+            });
+        }
+
+        // Initialize category filtering
+        function initCategoryFiltering() {
+            const categoryButtons = document.querySelectorAll('#materials .category-btn');
+            const allMaterialsSlider = document.getElementById('all-materials-slider');
+            const historyGrid = document.getElementById('history-materials');
+            const biologyGrid = document.getElementById('biology-materials');
+            const romanaGrid = document.getElementById('romana-materials');
+            
+            // Get all cards from the slider
+            const allCards = document.querySelectorAll('#materials .slider-track .card');
+            
+            // Function to move cards to appropriate grid
+            function moveCardsToGrid(category) {
+                // Clear all grids first
+                historyGrid.innerHTML = '';
+                biologyGrid.innerHTML = '';
+                romanaGrid.innerHTML = '';
+                
+                // Hide all containers
+                allMaterialsSlider.style.display = 'none';
+                historyGrid.style.display = 'none';
+                biologyGrid.style.display = 'none';
+                romanaGrid.style.display = 'none';
+                
+                if (category === 'all') {
+                    allMaterialsSlider.style.display = 'block';
+                } else {
+                    // Show the appropriate grid
+                    const targetGrid = document.getElementById(`${category}-materials`);
+                    targetGrid.style.display = 'grid';
+                    
+                    // Move matching cards to the grid
+                    allCards.forEach(card => {
+                        if (card.getAttribute('data-category') === category) {
+                            const clone = card.cloneNode(true);
+                            clone.style.display = 'flex'; // Ensure it's visible
+                            targetGrid.appendChild(clone);
+                        }
+                    });
+                }
+            }
+            
+            // Set up click handlers for category buttons
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    moveCardsToGrid(category);
+                });
+            });
+            
+            // Initialize with "all" category
+            moveCardsToGrid('all');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize slider for "all materials"
+            setupSlider();
+            
+            // Initialize category filtering
+            initCategoryFiltering();
+            
+            // Initialize active menu highlighting
+            updateActiveMenuOnScroll();
+            
+            // Listen for scroll events
+            window.addEventListener('scroll', updateHeaderOnScroll);
+            
+            // Handle smooth scrolling with enhanced animation
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        
+                        if (targetElement) {
+                            // Add visual feedback on click
+                            this.classList.add('clicked');
+                            setTimeout(() => {
+                                this.classList.remove('clicked');
+                            }, 300);
+                            
+                            // Smooth scroll with easing
+                            const startPosition = window.pageYOffset;
+                            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 100;
+                            const distance = targetPosition - startPosition;
+                            const duration = 800;
+                            let start = null;
+                            
+                            function step(timestamp) {
+                                if (!start) start = timestamp;
+                                const progress = timestamp - start;
+                                const percentage = Math.min(progress / duration, 1);
+                                
+                                // Easing function - easeOutQuart
+                                const easing = 1 - Math.pow(1 - percentage, 4);
+                                window.scrollTo(0, startPosition + distance * easing);
+                                
+                                if (progress < duration) {
+                                    window.requestAnimationFrame(step);
+                                } else {
+                                    // Update active class when done scrolling
+                                    updateActiveLink(targetId.substring(1));
+                                }
+                            }
+                            
+                            window.requestAnimationFrame(step);
+                        }
+                    }
+                });
+            });
+            
+            // Initialize subject rotation animation for tutor subjects
+            function initSubjectRotation() {
+                const subjects = document.querySelectorAll('#vip-area .subject-text');
+                if (subjects.length < 2) return;
+                
+                let currentIndex = 0;
+                
+                function rotateSubjects() {
+                    // Remove current class from all subjects
+                    subjects.forEach(subject => subject.classList.remove('current'));
+                    
+                    // Increment and wrap around if needed
+                    currentIndex = (currentIndex + 1) % subjects.length;
+                    
+                    // Add current class to the new active subject
+                    subjects[currentIndex].classList.add('current');
+                }
+                
+                // Set initial state
+                subjects[0].classList.add('current');
+                
+                // Start rotation every 3 seconds
+                setInterval(rotateSubjects, 3000);
+            }
+            
+            // Call the function to start the animation
+            initSubjectRotation();
+        });
+
+        // Update header based on scroll position
+        function updateHeaderOnScroll() {
+            const header = document.querySelector('header');
+            const scrollY = window.scrollY;
+            
+            // Add scrolled class when scrolled down
+            if (scrollY > 50) {
+                header.classList.add('scrolled');
+                } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Update active menu link
+            updateActiveMenuOnScroll();
+        }
+
+        // Set active menu item based on scroll position
+        function updateActiveLink(currentSection) {
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                if (href === `#${currentSection}`) {
+                    if (!link.classList.contains('vip-link')) {
+                        link.classList.add('active');
+                    }
+                }
+            });
+        }
+
+        // Update active menu based on scroll position
+        function updateActiveMenuOnScroll() {
+            // Get all sections
+            const sections = document.querySelectorAll('section[id]');
+            
+            // Find which section is in view
+            let currentSection = '';
+            let minDistance = Number.MAX_SAFE_INTEGER;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                const sectionBottom = sectionTop + sectionHeight;
+                const scrollY = window.scrollY;
+                
+                // Check if section is in view
+                if (scrollY >= sectionTop - 200 && scrollY < sectionBottom) {
+                    const distance = Math.abs(scrollY - sectionTop);
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        currentSection = section.getAttribute('id');
+                    }
+                }
+            });
+            
+            if (currentSection) {
+                updateActiveLink(currentSection);
+            }
+        }
+    </script>
+
+<script src="teste.js"></script>
+</body>
+</html>
