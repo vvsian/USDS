@@ -1,1099 +1,483 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uniunea Sovietica De Studii - USDS</title>
-    <meta name="description" content="Platforma de Studiu este o platformă modernă pentru învățare online și materiale de studiu">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="header.css">
-    <link rel="stylesheet" href="materials.css">
-    <link rel="stylesheet" href="videos.css">
-    <link rel="stylesheet" href="contact.css">
-    <link rel="stylesheet" href="modal.css">
-    <link rel="stylesheet" href="hero.css">
-    <link rel="stylesheet" href="profile.css">
-    <link rel="stylesheet" href="teste.css">
-    <link rel="stylesheet" href="footer.css">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Slider styles added directly to index.html */
-        #materials .slider-container {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            padding: 20px 0;
-            margin: 0 auto;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>i'm sorry</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Courier+Prime:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        #materials .slider-track {
-            display: flex;
-            gap: 30px;
-            width: max-content;
-            will-change: transform;
-            animation: scroll 40s linear infinite;
-            padding: 10px 0;
-        }
+  :root {
+    --white: #e8e4dc;
+    --dim: rgba(232,228,220,0.45);
+    --faint: rgba(232,228,220,0.18);
+  }
 
-        #materials .slider-container:hover .slider-track {
-            animation-play-state: paused;
-        }
+  html, body {
+    width: 100%; height: 100%;
+    background: #000;
+    overflow: hidden;
+    cursor: none;
+  }
 
-        #materials .slider-track .card {
-            flex: 0 0 300px;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            animation: none !important;
-            transform: none !important;
-        }
+  canvas#bg {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+  }
 
-        #materials .slider-track .card:hover {
-            transform: translateY(-5px) scale(1.03) !important;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18), 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
+  #cursor {
+    position: fixed; width: 5px; height: 5px;
+    border: 1px solid rgba(232,228,220,0.6);
+    border-radius: 50%; pointer-events: none;
+    transform: translate(-50%,-50%); z-index: 9999;
+  }
+  #cursor-trail {
+    position: fixed; width: 28px; height: 28px;
+    border: 0.5px solid rgba(232,228,220,0.12);
+    border-radius: 50%; pointer-events: none;
+    transform: translate(-50%,-50%); z-index: 9998;
+    transition: left 0.15s ease-out, top 0.15s ease-out;
+  }
 
-        /* Static grid styles for non-all categories */
-        #materials .static-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            padding: 20px 0;
-            width: 100%;
-        }
+  #scene {
+    position: relative; z-index: 10;
+    width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
 
-        #materials .static-grid .card {
-            width: 100%;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-        }
+  #content {
+    text-align: center;
+    animation: fadeUp 3.5s ease-out 1.2s both;
+    display: flex; flex-direction: column; align-items: center;
+  }
 
-        #materials .static-grid .card:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18), 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(calc(-300px * var(--card-count) - 30px * (var(--card-count) - 1)));
-            }
-        }
+  .line-ornament {
+    display: flex; align-items: center; gap: 12px;
+    width: 360px; animation: fadeIn 2.5s ease-out 2s both;
+  }
+  .line-ornament.top  { margin-bottom: 40px; }
+  .line-ornament.bottom { margin-top: 40px; }
+  .rule { flex: 1; height: 0.5px; background: linear-gradient(90deg, transparent, var(--faint), transparent); }
+  .diamond { width: 4px; height: 4px; background: rgba(232,228,220,0.25); transform: rotate(45deg); flex-shrink: 0; }
 
-        @media screen and (max-width: 768px) {
-            #materials .slider-track .card,
-            #materials .static-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-            
-            #materials .slider-track .card {
-                flex: 0 0 280px;
-            }
-            
-            @keyframes scroll {
-                100% {
-                    transform: translateX(calc(-280px * var(--card-count) - 30px * (var(--card-count) - 1)));
-                }
-            }
-        }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        @media screen and (max-width: 480px) {
-            #materials .slider-track .card,
-            #materials .static-grid {
-                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            }
-            
-            #materials .slider-track .card {
-                flex: 0 0 260px;
-            }
-            
-            @keyframes scroll {
-                100% {
-                    transform: translateX(calc(-260px * var(--card-count) - 30px * (var(--card-count) - 1)));
-                }
-            }
-        }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: clamp(30px, 5vw, 52px);
+    letter-spacing: 0.38em; color: var(--white);
+    text-transform: lowercase; margin-bottom: 22px;
+    animation: textBreathe 9s ease-in-out 4s infinite;
+  }
 
-        @media (prefers-reduced-motion: reduce) {
-            #materials .slider-track {
-                animation: none;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            #materials .slider-track .card {
-                scroll-snap-align: start;
-            }
-        }
-    </style>
+  @keyframes textBreathe {
+    0%,100% { opacity:1; text-shadow: 0 0 40px rgba(160,180,200,0); }
+    50%      { opacity:0.88; text-shadow: 0 0 40px rgba(160,180,200,0.08); }
+  }
+
+  .sub1 {
+    font-family: 'Courier Prime', monospace;
+    font-size: clamp(11px,1.5vw,13px); letter-spacing: 0.26em;
+    color: var(--dim); text-transform: lowercase; margin-bottom: 10px;
+  }
+  .sub2 {
+    font-family: 'Courier Prime', monospace;
+    font-size: clamp(10px,1.3vw,12px); letter-spacing: 0.2em;
+    color: var(--faint); text-transform: lowercase; font-style: italic;
+  }
+
+  #vignette {
+    position: fixed; inset: 0; z-index: 8; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.82) 100%);
+  }
+
+  #particles-layer { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
+  .particle {
+    position: absolute; border-radius: 50%; background: var(--white);
+    animation: drift linear infinite;
+  }
+  @keyframes drift {
+    0%   { transform: translateY(0) translateX(0); opacity: 0; }
+    8%   { opacity: .55; }
+    92%  { opacity: .2; }
+    100% { transform: translateY(-100px) translateX(var(--dx)); opacity: 0; }
+  }
+
+  /* ── Note star overlay layer ── */
+  #note-layer { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
+
+  .note-star {
+    position: absolute;
+    pointer-events: all;
+    cursor: none;
+    transform: translate(-50%, -50%);
+  }
+
+  .note-star .star-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(220, 210, 190, 0.9);
+    box-shadow: 0 0 6px 2px rgba(220,210,190,0.4);
+    transition: box-shadow 0.3s ease, background 0.3s ease;
+    margin: auto;
+  }
+
+  .note-star:hover .star-dot {
+    background: rgba(240, 235, 220, 1);
+    box-shadow: 0 0 14px 5px rgba(220,210,190,0.7);
+  }
+
+  .note-star .label {
+    position: absolute;
+    left: 50%; bottom: calc(100% + 12px);
+    transform: translateX(-50%);
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: rgba(232, 228, 220, 0);
+    white-space: nowrap;
+    pointer-events: none;
+    transition: color 0.4s ease, bottom 0.4s ease;
+    text-shadow: 0 0 18px rgba(180,200,220,0.5);
+  }
+
+  .note-star:hover .label {
+    color: rgba(232, 228, 220, 0.72);
+    bottom: calc(100% + 16px);
+  }
+
+  /* tail canvas for shooting star animation */
+  #tail-layer {
+    position: fixed; inset: 0; z-index: 19;
+    pointer-events: none;
+  }
+</style>
 </head>
 <body>
-    <div class="parallax-bg">
-        <div class="parallax-element"></div>
-        <div class="parallax-element"></div>
-        <div class="parallax-element"></div>
-        <div class="parallax-element"></div>
+
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+
+<canvas id="bg"></canvas>
+<canvas id="tail-layer"></canvas>
+<div id="vignette"></div>
+<div id="particles-layer"></div>
+<div id="note-layer"></div>
+
+<div id="scene">
+  <div id="content">
+    <div class="line-ornament top">
+      <div class="rule"></div><div class="diamond"></div><div class="rule"></div>
     </div>
-    <header>
-        <div class="logo">
-            <span class="logo-text">Uniunea  de <span>Studii</span></span>
-        </div>
-        <div class="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#materials" class="active">Materiale</a></li>
-                <li><a href="#videos">Videoclipuri</a></li>
-                <li><a href="#quizzes">Exerciții</a></li>
-                <li><a href="#vip-area" class="vip-link">Ajutor</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section id="hero">
-        <div class="hero-bg">
-            <div class="animated-shape shape1"></div>
-            <div class="animated-shape shape2"></div>
-            <div class="animated-shape shape3"></div>
-            <!-- Add particles -->
-            <div class="particles">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        <div class="hero-content">
-            <h1 class="hero-title">Uniunea De Studii</h1>
-            <p class="hero-subtitle">Proiect facut pentru a forma o cooperare intre elevii clasei a 9-a</p>
-            <div class="hero-features">
-                <div class="hero-feature">
-                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                    <span>Materiale PDF</span>
-                </div>
-                <div class="hero-feature">
-                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                    <span>Videoclipuri si Podcasturi</span>
-                </div>
-                <div class="hero-feature">
-                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                    <span>Teste Practice</span>
-                </div>
-            </div>
-            <div class="hero-cta">
-                <a href="#materials" class="btn-primary">Explorează Materialele</a>
-                <a href="#videos" class="btn-secondary">Vizionează Videoclipuri</a>
-            </div>
-        </div>
-        <div class="hero-visual">
-            <div class="visual-container">
-                <div class="visual-card">
-                    <div class="visual-card-content">
-                        <div class="visual-card-title">Biologie</div>
-                        <div class="visual-card-text">Principii și concepte de bază explicate cu exemple clare și diagrame interactive.</div>
-                        <div class="visual-card-meta">
-                            <span>4.8 ★</span>
-                            <span>25 min</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="visual-card">
-                    <div class="visual-card-content">
-                        <div class="visual-card-title">Istorie</div>
-                        <div class="visual-card-text">Context, tabele, rezumate si multe informatii ajutatoare</div>
-                        <div class="visual-card-meta">
-                            <span>4.6 ★</span>
-                            <span>15 min</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="visual-card">
-                    <div class="visual-card-content">
-                        <div class="visual-card-title">Limba si Literatura Romana</div>
-                        <div class="visual-card-text">Figuri de stil si altele.</div>
-                        <div class="visual-card-meta">
-                            <span>4.9 ★</span>
-                            <span>20 min</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="visual-card">
-                    <div class="visual-card-content">
-                        <div class="visual-card-title">Soluții Matematice</div>
-                        <div class="visual-card-text">Abordare pas cu pas pentru rezolvarea eficientă a problemelor complexe.</div>
-                        <div class="visual-card-meta">
-                            <span>4.7 ★</span>
-                            <span>18 min</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="visual-card">
-                    <div class="visual-card-content">
-                        <div class="visual-card-title">Limba Engleză</div>
-                        <div class="visual-card-text">Materiale pentru dezvoltarea fluenței și gramaticii în limba engleză.</div>
-                        <div class="visual-card-meta">
-                            <span>4.9 ★</span>
-                            <span>15 min</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="floating-dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-        </div>
-        <div class="scroll-indicator"></div>
-    </section>
-
-    <main>
-        <div class="bg-pattern"></div>
-        
-        <section id="materials" class="section" data-section-number="01">
-            <h1>Materiale de Studiu</h1>
-            <div class="category-wrapper">
-                <div class="category-selector">
-                    <button class="category-btn active" data-category="all">Toate Materialele</button>
-                    <button class="category-btn" data-category="history">Istorie</button>
-                    <button class="category-btn" data-category="biology">Biologie</button>
-                    <button class="category-btn" data-category="romana">Română</button>
-                    <button class="category-btn" data-category="matematica">Matematică</button>
-                    <button class="category-btn" data-category="engleza">Engleză</button>
-                </div>
-            </div>
-            
-            <div class="info-section">
-                <span class="info-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path></svg>
-                </span>
-                <div class="info-text">
-                Materialele au fost create cu ajutorul unor unelte, puteti si voi sa incercati, dar daca nu puteti,
-                    <span class="button-wrapper"><a href="#vip-area" class="contact-btn" onclick="smoothScrollToVip(event)">Contactați-ne</a></span>
-                    și le facem pentru voi.
-                </div>
-            </div>
-            
-            <!-- Slider will be shown for "all" category -->
-            <div class="slider-container" id="all-materials-slider">
-                <div class="slider-track">
-                    <!-- History documents -->
-                    <div class="card" data-category="history">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#5845C8" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>Primul Război Mondial</h2>
-                            <p>Studiu complet despre Primul Război Mondial, cauzele sale, evenimentele majore și impactul global.</p>
-                            <div class="card-footer">
-                                <span class="date">Istorie</span>
-                                <div class="card-actions">
-                                    <a href="Primul Razboi Mondial.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Biology documents -->
-                    <div class="card" data-category="biology">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#4CAF50" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>Organismele si Ecosistemul</h2>
-                            <p>Notite pentru ultimul capitol din cartea de Biologie.</p>
-                            <div class="card-footer">
-                                <span class="date">Biologie</span>
-                                <div class="card-actions">
-                                    <a href="Biologie.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Romanian documents -->
-                    <div class="card" data-category="romana">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#FF5722" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>Figuri de Stil</h2>
-                            <p>Figuri de stil si altele.</p>
-                            <div class="card-footer">
-                                <span class="date">Română</span>
-                                <div class="card-actions">
-                                    <a href="Figuri de Stil.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Verbul PDF -->
-                    <div class="card" data-category="romana">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#2196F3" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>Verbul</h2>
-                            <p>Material PDF despre verb, definiții, exemple și explicații utile pentru gramatică.</p>
-                            <div class="card-footer">
-                                <span class="date">Română</span>
-                                <div class="card-actions">
-                                    <a href="verbul.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Subordonata PDF -->
-                    <div class="card" data-category="romana">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#FF5722" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>Propoziții Subordonate</h2>
-                            <p>Material PDF despre propoziții subordonate, exemple și explicații utile pentru gramatică.</p>
-                            <div class="card-footer">
-                                <span class="date">Română</span>
-                                <div class="card-actions">
-                                    <a href="subordonata.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
-
-                    <div class="card" data-category="matematica">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#4CAF50" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>Formule Matematice</h2>
-                            <p>Formule și teoreme matematice esențiale pentru studiu și referință rapidă.</p>
-                            <div class="card-footer">
-                                <span class="date">Matematică</span>
-                                <div class="card-actions">
-                                    <a href="FORMULEMATE.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" data-category="history">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#5845C8" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>Perioada Interbelică</h2>
-                            <p>Analiză a perioadei dintre Primul și Al Doilea Război Mondial, explorând schimbările politice, economice și sociale.</p>
-                            <div class="card-footer">
-                                <span class="date">Istorie</span>
-                                <div class="card-actions">
-                                    <a href="Perioada Interbelica.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" data-category="history">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#5845C8" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>Relații Interbelice</h2>
-                            <p>Studiu al relațiilor internaționale, tratatelor și dezvoltărilor diplomatice între Războaiele Mondiale.</p>
-                            <div class="card-footer">
-                                <span class="date">Istorie</span>
-                                <div class="card-actions">
-                                    <a href="Relatii Interbelice.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" data-category="history">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#5845C8" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>Al Doilea Război Mondial</h2>
-                            <p>Examinare detaliată a celui de-Al Doilea Război Mondial, acoperind bătăliile majore, strategiile politice și impactul său de durată asupra istoriei mondiale.</p>
-                            <div class="card-footer">
-                                <span class="date">Istorie</span>
-                                <div class="card-actions">
-                                    <a href="Al doilea Razboi Mondial.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" data-category="history">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#5845C8" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>Perioada Postbelică</h2>
-                            <p>Analiză detaliată a perioadei de după Al Doilea Război Mondial, inclusiv Războiul Rece, decolonizarea și transformările geopolitice globale.</p>
-                            <div class="card-footer">
-                                <span class="date">Istorie</span>
-                                <div class="card-actions">
-                                    <a href="Perioada Postbel1ca.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                  
-
-                    <div class="card" data-category="engleza">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32">
-                                <path fill="#039BE5" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="0.75"></polyline>
-                                <path d="M12 18v-6m-2 4l2 2 2-2" stroke="#fff" fill="none" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
-                        <div class="content">
-                            <div class="document-badge">
-                                <svg viewBox="0 0 24 24" width="14" height="14">
-                                    <path fill="#00B2D6" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8" stroke="#fff" fill="none" stroke-width="1"></polyline>
-                                </svg>
-                                <span>PDF</span>
-                            </div>
-                            <h2>English Tenses</h2>
-                            <p>Present, Past, Future.</p>
-                            <div class="card-footer">
-                                <span class="date">Engleză</span>
-                                <div class="card-actions">
-                                    <a href="tenses_table.pdf" class="view-btn" target="_blank">Descarcă</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Static grids for specific categories (hidden by default) -->
-            <div class="static-grid" id="history-materials" style="display: none;">
-                <!-- History cards will be moved here when category is selected -->
-            </div>
-
-            <div class="static-grid" id="biology-materials" style="display: none;">
-                <!-- Biology cards will be moved here when category is selected -->
-            </div>
-
-            <div class="static-grid" id="romana-materials" style="display: none;">
-                <!-- Romanian cards will be moved here when category is selected -->
-            </div>
-
-            <div class="static-grid" id="matematica-materials" style="display: none;">
-                <!-- Matematica cards will be moved here when category is selected -->
-            </div>
-
-            <div class="static-grid" id="engleza-materials" style="display: none;">
-                <!-- English cards will be moved here when category is selected -->
-            </div>
-        </section>
-        
-        <div class="section-connector">
-            <div class="connector-particles">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-
-        <section id="quizzes" class="section" data-section-number="02">
-            <h1>Teste Practice</h1>
-            <div class="cards-container">
-                <!-- Custom quizzes will be added here -->
-            </div>
-        </section>
-        
-        <div class="section-connector">
-            <div class="connector-particles">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <section id="videos" class="section" data-section-number="03">
-            <h1>Lecții Video</h1>
-            <div class="info-section">
-                <span class="info-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path></svg>
-                </span>
-                <div class="info-text">
-                    Aceste videoclipuri sunt resurse utile pentru pregătirea examenelor la istorie. Ele oferă explicații detaliate și exemple practice.
-                </div>
-            </div>
-            <div class="cards-container">
-                <a href="https://youtu.be/sFU5e-YO2Ts?si=w7rMMfMrJZg4FMa6" target="_blank" class="video-link">
-                    <div class="video-card-content">
-                        <i class="fas fa-play-circle"></i>
-                        <span class="video-title">Rezolvare itemi examen istorie - Part 1</span>
-                        <div class="video-meta">
-                            <span class="video-subject">Istorie</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="https://youtu.be/SUCn6WvEN-0?si=exfQ_3C7aCrrTXOV" target="_blank" class="video-link">
-                    <div class="video-card-content">
-                        <i class="fas fa-play-circle"></i>
-                        <span class="video-title">Rezolvare itemi examen istorie - Part 2</span>
-                        <div class="video-meta">
-                            <span class="video-subject">Istorie</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-        <div class="section-connector">
-            <div class="connector-particles">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-
-        <section id="vip-area" class="section" data-section-number="04">
-            <div class="vip-content">
-                <div class="animated-shape vip-shape1"></div>
-                <div class="animated-shape vip-shape2"></div>
-                <div class="animated-shape vip-shape3"></div>
-                
-                <div class="vip-header">
-                    <h1 class="vip-title">Ai Nevoie de Suport Academic Suplimentar?</h1>
-                    <p class="vip-subtitle">Obține ajutor personalizat pentru studiile tale</p>
-                </div>
-                
-                <div class="vip-contact-container">
-                    <div class="vip-contact-card">
-                        <h3 class="vip-contact-title">Contactează-ne Acum</h3>
-                        <p class="vip-contact-description">Ai nevoie de ajutor cu temele sau vrei să înveți mai mult despre un anumit subiect? Trimite-ne un email și îți vom răspunde cât mai curând posibil cu materiale personalizate și suport academic.</p>
-                        <a href="mailto:vvsi4n@gmail.com" class="vip-contact-btn">vvsi4n@gmail.com</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="wave-container">
-            <div class="wave"></div>
-        </div>
-        <div class="footer-glass">
-            <div class="footer-content">
-                <div class="footer-logo-wrapper">
-                    <span class="logo-text">Uniunea de <span>Studii</span></span>
-                </div>
-                <p class="footer-copyright">&copy; <script>document.write(new Date().getFullYear())</script> USDS</p>
-            </div>
-            <div class="footer-credits">
-                <small>Toate drepturile rezervate • Proiect realizat cu 💜</small>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modal Templates -->
-    <!-- Document Modal -->
-    <div class="modal-overlay document-modal" id="document-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="document-title">Titlul Documentului</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="document-content" id="document-content">
-                    <!-- Content will be loaded dynamically -->
-                </div>
-            </div>
-        </div>
+    <h1>i'm sorry</h1>
+    <p class="sub1">not because i want anything back.</p>
+    <p class="sub2">just because you deserved better from me.</p>
+    <div class="line-ornament bottom">
+      <div class="rule"></div><div class="diamond"></div><div class="rule"></div>
     </div>
+  </div>
+</div>
 
-    <!-- Video Modal -->
-    <div class="modal-overlay video-modal" id="video-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="video-title">Titlul Videoclipului</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="video-container" id="video-container">
-                    <!-- Video will be loaded dynamically -->
-                </div>
-            </div>
-        </div>
-    </div>
+<script>
+(function(){
 
-    <!-- Quiz Modal -->
-    <div class="modal-overlay quiz-modal" id="quiz-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="quiz-title">Titlul Testului</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body" id="quiz-content">
-                <!-- Quiz content will be loaded dynamically -->
-            </div>
-        </div>
-    </div>
+/* ─── Cursor ─── */
+const cur = document.getElementById('cursor');
+const trl = document.getElementById('cursor-trail');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px';
+  trl.style.left = e.clientX + 'px'; trl.style.top = e.clientY + 'px';
+});
 
-    <script>
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 30) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-        
-        // Smooth scroll to VIP area
-        function smoothScrollToVip(e) {
-            e.preventDefault();
-            
-            const vipSection = document.getElementById('vip-area');
-            if (!vipSection) return;
-            
-            // Add visual feedback
-            const btn = e.target;
-            btn.classList.add('clicked');
-            setTimeout(() => {
-                btn.classList.remove('clicked');
-            }, 300);
-            
-            // Smooth scroll with easing
-            const startPosition = window.pageYOffset;
-            const targetPosition = vipSection.getBoundingClientRect().top + window.pageYOffset - 100;
-            const distance = targetPosition - startPosition;
-            const duration = 800;
-            let start = null;
-            
-            function step(timestamp) {
-                if (!start) start = timestamp;
-                const progress = timestamp - start;
-                const percentage = Math.min(progress / duration, 1);
-                
-                // Easing function - easeOutQuart
-                const easing = 1 - Math.pow(1 - percentage, 4);
-                window.scrollTo(0, startPosition + distance * easing);
-                
-                if (progress < duration) {
-                    window.requestAnimationFrame(step);
-                } else {
-                    // Update active class when done scrolling
-                    updateActiveLink('vip-area');
-                }
-            }
-            
-            window.requestAnimationFrame(step);
-        }
-        
-        // Mobile menu toggle
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navMenu = document.querySelector('nav');
-        
-        menuToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-        
-        // Modal functionality
-        const closeButtons = document.querySelectorAll('.modal-close');
-        const modalOverlays = document.querySelectorAll('.modal-overlay');
-        
-        // Close modal when clicking on overlay or close button
-        modalOverlays.forEach(overlay => {
-            overlay.addEventListener('click', function(e) {
-                if (e.target === overlay) {
-                    closeAllModals();
-                }
-            });
-        });
-        
-        closeButtons.forEach(button => {
-            button.addEventListener('click', closeAllModals);
-        });
-        
-        // Close modal with ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeAllModals();
-            }
-        });
-        
-        function closeAllModals() {
-            modalOverlays.forEach(overlay => {
-                overlay.classList.remove('active');
-            });
-            
-            // Pause videos when closing modal
-            const videoContainer = document.getElementById('video-container');
-            if (videoContainer) {
-                videoContainer.innerHTML = '';
-            }
-        }
-        
-        // Setup slider functionality
-        function setupSlider() {
-            const sliderTrack = document.querySelector('#materials .slider-track');
-            if (!sliderTrack) return;
-            
-            const cardCount = sliderTrack.children.length;
-            sliderTrack.style.setProperty('--card-count', cardCount);
-            
-            // Clone cards for infinite loop effect
-            const cards = sliderTrack.querySelectorAll('.card');
-            cards.forEach(card => {
-                const clone = card.cloneNode(true);
-                sliderTrack.appendChild(clone);
-            });
-        }
+/* ─── Mouse parallax ─── */
+let mx = 0.5, my = 0.5, smx = 0.5, smy = 0.5;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX / window.innerWidth;
+  my = e.clientY / window.innerHeight;
+});
 
-        // Initialize category filtering
-        function initCategoryFiltering() {
-            const categoryButtons = document.querySelectorAll('#materials .category-btn');
-            const allMaterialsSlider = document.getElementById('all-materials-slider');
-            const historyGrid = document.getElementById('history-materials');
-            const biologyGrid = document.getElementById('biology-materials');
-            const romanaGrid = document.getElementById('romana-materials');
-            const matematicaGrid = document.getElementById('matematica-materials');
-            const englezaGrid = document.getElementById('engleza-materials');
-            
-            // Get all cards from the slider
-            const allCards = document.querySelectorAll('#materials .slider-track .card');
-            
-            // Function to move cards to appropriate grid
-            function moveCardsToGrid(category) {
-                // Clear all grids first
-                historyGrid.innerHTML = '';
-                biologyGrid.innerHTML = '';
-                romanaGrid.innerHTML = '';
-                matematicaGrid.innerHTML = '';
-                englezaGrid.innerHTML = '';
-                
-                // Hide all containers
-                allMaterialsSlider.style.display = 'none';
-                historyGrid.style.display = 'none';
-                biologyGrid.style.display = 'none';
-                romanaGrid.style.display = 'none';
-                matematicaGrid.style.display = 'none';
-                englezaGrid.style.display = 'none';
-                
-                if (category === 'all') {
-                    allMaterialsSlider.style.display = 'block';
-                } else {
-                    // Show the appropriate grid
-                    const targetGrid = document.getElementById(`${category}-materials`);
-                    targetGrid.style.display = 'grid';
-                    
-                    // Move matching cards to the grid
-                    allCards.forEach(card => {
-                        if (card.getAttribute('data-category') === category) {
-                            const clone = card.cloneNode(true);
-                            clone.style.display = 'flex'; // Ensure it's visible
-                            targetGrid.appendChild(clone);
-                        }
-                    });
-                }
-            }
-            
-            // Set up click handlers for category buttons
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Update active button
-                    categoryButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const category = this.getAttribute('data-category');
-                    moveCardsToGrid(category);
-                });
-            });
-            
-            // Initialize with "all" category
-            moveCardsToGrid('all');
-        }
+/* ─── Main canvas ─── */
+const bgC = document.getElementById('bg');
+const bgX = bgC.getContext('2d');
+const tailC = document.getElementById('tail-layer');
+const tailX = tailC.getContext('2d');
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize slider for "all materials"
-            setupSlider();
-            
-            // Initialize category filtering
-            initCategoryFiltering();
-            
-            // Initialize active menu highlighting
-            updateActiveMenuOnScroll();
-            
-            // Listen for scroll events
-            window.addEventListener('scroll', updateHeaderOnScroll);
-            
-            // Handle smooth scrolling with enhanced animation
-            const navLinks = document.querySelectorAll('nav a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (this.getAttribute('href').startsWith('#')) {
-                        e.preventDefault();
-                        
-                        const targetId = this.getAttribute('href');
-                        const targetElement = document.querySelector(targetId);
-                        
-                        if (targetElement) {
-                            // Add visual feedback on click
-                            this.classList.add('clicked');
-                            setTimeout(() => {
-                                this.classList.remove('clicked');
-                            }, 300);
-                            
-                            // Smooth scroll with easing
-                            const startPosition = window.pageYOffset;
-                            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 100;
-                            const distance = targetPosition - startPosition;
-                            const duration = 800;
-                            let start = null;
-                            
-                            function step(timestamp) {
-                                if (!start) start = timestamp;
-                                const progress = timestamp - start;
-                                const percentage = Math.min(progress / duration, 1);
-                                
-                                // Easing function - easeOutQuart
-                                const easing = 1 - Math.pow(1 - percentage, 4);
-                                window.scrollTo(0, startPosition + distance * easing);
-                                
-                                if (progress < duration) {
-                                    window.requestAnimationFrame(step);
-                                } else {
-                                    // Update active class when done scrolling
-                                    updateActiveLink(targetId.substring(1));
-                                }
-                            }
-                            
-                            window.requestAnimationFrame(step);
-                        }
-                    }
-                });
-            });
-            
-            // Initialize subject rotation animation for tutor subjects
-            function initSubjectRotation() {
-                const subjects = document.querySelectorAll('#vip-area .subject-text');
-                if (subjects.length < 2) return;
-                
-                let currentIndex = 0;
-                
-                function rotateSubjects() {
-                    // Remove current class from all subjects
-                    subjects.forEach(subject => subject.classList.remove('current'));
-                    
-                    // Increment and wrap around if needed
-                    currentIndex = (currentIndex + 1) % subjects.length;
-                    
-                    // Add current class to the new active subject
-                    subjects[currentIndex].classList.add('current');
-                }
-                
-                // Set initial state
-                subjects[0].classList.add('current');
-                
-                // Start rotation every 3 seconds
-                setInterval(rotateSubjects, 3000);
-            }
-            
-            // Call the function to start the animation
-            initSubjectRotation();
-        });
+function resize() {
+  bgC.width = tailC.width = window.innerWidth;
+  bgC.height = tailC.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
 
-        // Update header based on scroll position
-        function updateHeaderOnScroll() {
-            const header = document.querySelector('header');
-            const scrollY = window.scrollY;
-            
-            // Add scrolled class when scrolled down
-            if (scrollY > 50) {
-                header.classList.add('scrolled');
-                } else {
-                header.classList.remove('scrolled');
-            }
-            
-            // Update active menu link
-            updateActiveMenuOnScroll();
-        }
+/* ─── Background stars ─── */
+const stars = [];
+for (let i = 0; i < 260; i++) stars.push({ x: Math.random(), y: Math.random(), r: Math.random()*1.0+0.15, a: Math.random()*0.55+0.08, sp: Math.random()*0.015+0.003, ph: Math.random()*Math.PI*2 });
+const keyStars = [];
+for (let i = 0; i < 12; i++) keyStars.push({ x: Math.random(), y: Math.random(), r: Math.random()*1.8+1.0, a: Math.random()*0.7+0.3, sp: Math.random()*0.008+0.002, ph: Math.random()*Math.PI*2 });
 
-        // Set active menu item based on scroll position
-        function updateActiveLink(currentSection) {
-            const navLinks = document.querySelectorAll('nav a');
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                const href = link.getAttribute('href');
-                if (href === `#${currentSection}`) {
-                    if (!link.classList.contains('vip-link')) {
-                        link.classList.add('active');
-                    }
-                }
-            });
-        }
+/* ─── Aurora ─── */
+const columns = [
+  { x:0.18, hue:215, width:0.22, speed:0.00018, phase:0 },
+  { x:0.45, hue:200, width:0.30, speed:0.00012, phase:1.8 },
+  { x:0.72, hue:225, width:0.20, speed:0.00022, phase:3.5 },
+  { x:0.88, hue:190, width:0.16, speed:0.00016, phase:5.0 },
+];
 
-        // Update active menu based on scroll position
-        function updateActiveMenuOnScroll() {
-            // Get all sections
-            const sections = document.querySelectorAll('section[id]');
-            
-            // Find which section is in view
-            let currentSection = '';
-            let minDistance = Number.MAX_SAFE_INTEGER;
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 100;
-                const sectionHeight = section.offsetHeight;
-                const sectionBottom = sectionTop + sectionHeight;
-                const scrollY = window.scrollY;
-                
-                // Check if section is in view
-                if (scrollY >= sectionTop - 200 && scrollY < sectionBottom) {
-                    const distance = Math.abs(scrollY - sectionTop);
-                    
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        currentSection = section.getAttribute('id');
-                    }
-                }
-            });
-            
-            if (currentSection) {
-                updateActiveLink(currentSection);
-            }
-        }
-    </script>
+/* ─── Note star messages ─── */
+const NOTE_MESSAGES = [
+  "too late to be sorry, right?",
+  "july 4, 3:44 AM 2025",
+  "\"wonderful and unique\"",
+  "\"inteleg si ai dreptate\"",
+  "i regret losing something that i cant find anymore.  [!##!@]",
+  "i lied my way out of shame.",
+  "i hope i dont forget to breathe a bit, too.",
+  "2 years ago, fascinated by one of a kind.",
+  "what am i doing?",
+  "looking back at how i acted, i am ashamed.\nhow could i be so careless?",
+  "\"isolation\"  habit that destroyed\na meaningful aspect of my life",
+  "regret, regret, regret",
+  "aug 7, 2024.",
+  "this is pointless.",
+];
 
-<script src="teste.js"></script>
+/* spread stars around, avoiding dead center */
+function randomNotePos() {
+  const margin = 0.08;
+  let x, y;
+  do {
+    x = margin + Math.random() * (1 - 2*margin);
+    y = margin + Math.random() * (1 - 2*margin);
+    const dx = x - 0.5, dy = y - 0.5;
+    // keep away from center poem area
+    if (Math.abs(dx) > 0.22 || Math.abs(dy) > 0.18) break;
+  } while (true);
+  return { x, y };
+}
+
+/* ─── Shooting star state ─── */
+// Each note star is first a shooting star that travels to its resting pos
+const noteStars = NOTE_MESSAGES.map((msg, i) => {
+  const pos = randomNotePos();
+  return {
+    msg,
+    tx: pos.x,   // target x (0-1)
+    ty: pos.y,   // target y (0-1)
+    sx: null,    // start x
+    sy: null,    // start y
+    cx: pos.x,   // current x
+    cy: pos.y,   // current y
+    progress: 1, // 0 = start of flight, 1 = arrived
+    arrived: false,
+    delay: 3500 + i * 1800, // stagger
+    spawned: false,
+    brightness: 0,
+  };
+});
+
+/* ─── DOM note stars (created after arrival) ─── */
+const noteLayer = document.getElementById('note-layer');
+const noteDOMs = [];
+
+function createNoteDOM(ns) {
+  const el = document.createElement('div');
+  el.className = 'note-star';
+  el.style.left = (ns.tx * 100) + '%';
+  el.style.top  = (ns.ty * 100) + '%';
+
+  const dot = document.createElement('div');
+  dot.className = 'star-dot';
+  dot.style.opacity = '0';
+  dot.style.transition = 'opacity 1.8s ease';
+
+  const lbl = document.createElement('div');
+  lbl.className = 'label';
+  // handle newlines
+  lbl.innerHTML = ns.msg.replace(/\n/g, '<br>');
+
+  el.appendChild(dot);
+  el.appendChild(lbl);
+  noteLayer.appendChild(el);
+
+  // fade dot in
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { dot.style.opacity = '1'; });
+  });
+
+  noteDOMs.push(el);
+}
+
+/* ─── Tail drawing ─── */
+const activeTails = [];
+
+function spawnShootingStar(ns) {
+  // come from a random edge, biased top/sides
+  const edge = Math.random();
+  let sx, sy;
+  if (edge < 0.5) { sx = Math.random(); sy = -0.05; }        // top
+  else if (edge < 0.75) { sx = -0.05; sy = Math.random()*0.6; } // left
+  else { sx = 1.05; sy = Math.random()*0.6; }                 // right
+
+  ns.sx = sx; ns.sy = sy;
+  ns.cx = sx; ns.cy = sy;
+  ns.progress = 0;
+  ns.spawned = true;
+
+  activeTails.push({
+    ns,
+    trail: [],       // array of {x,y,a}
+    done: false,
+  });
+}
+
+function drawTails() {
+  tailX.clearRect(0, 0, tailC.width, tailC.height);
+  const W = tailC.width, H = tailC.height;
+
+  activeTails.forEach(tail => {
+    const ns = tail.ns;
+    if (ns.arrived) return;
+
+    // eased progress
+    ns.progress += 0.012;
+    if (ns.progress >= 1) {
+      ns.progress = 1;
+      ns.cx = ns.tx; ns.cy = ns.ty;
+      ns.arrived = true;
+      createNoteDOM(ns);
+      tail.done = true;
+    } else {
+      const e = 1 - Math.pow(1 - ns.progress, 3);
+      ns.cx = ns.sx + (ns.tx - ns.sx) * e;
+      ns.cy = ns.sy + (ns.ty - ns.sy) * e;
+    }
+
+    const px = ns.cx * W, py = ns.cy * H;
+
+    // store trail point
+    tail.trail.push({ x: px, y: py, a: 0.85 });
+    if (tail.trail.length > 28) tail.trail.shift();
+
+    // draw tail
+    for (let i = 1; i < tail.trail.length; i++) {
+      const p0 = tail.trail[i-1], p1 = tail.trail[i];
+      const frac = i / tail.trail.length;
+      tailX.beginPath();
+      tailX.moveTo(p0.x, p0.y);
+      tailX.lineTo(p1.x, p1.y);
+      tailX.strokeStyle = `rgba(210,220,235,${frac * 0.55})`;
+      tailX.lineWidth = frac * 1.5;
+      tailX.stroke();
+    }
+
+    // draw head
+    tailX.beginPath();
+    tailX.arc(px, py, 2.2, 0, Math.PI*2);
+    tailX.fillStyle = 'rgba(230,225,210,0.95)';
+    tailX.fill();
+  });
+
+  // cleanup done tails
+  for (let i = activeTails.length-1; i >= 0; i--) {
+    if (activeTails[i].done) activeTails.splice(i,1);
+  }
+}
+
+/* ─── Main draw loop ─── */
+let t = 0, last = 0;
+
+function draw(ts) {
+  const dt = ts - last; last = ts;
+  t += dt;
+
+  smx += (mx - smx) * 0.04;
+  smy += (my - smy) * 0.04;
+  const px = (smx - 0.5) * 0.04;
+  const py = (smy - 0.5) * 0.025;
+
+  const W = bgC.width, H = bgC.height;
+
+  bgX.fillStyle = '#000';
+  bgX.fillRect(0, 0, W, H);
+
+  columns.forEach(col => {
+    const cx = (col.x + Math.sin(t*col.speed*0.7+col.phase)*0.06 + px*0.5)*W;
+    const w  = col.width * W;
+    const breathe = 0.7 + 0.3*Math.sin(t*col.speed*3+col.phase);
+    const alpha = 0.055*breathe;
+    const grd = bgX.createLinearGradient(cx-w/2,0,cx+w/2,0);
+    grd.addColorStop(0,'transparent');
+    grd.addColorStop(0.35,`hsla(${col.hue},45%,28%,${alpha})`);
+    grd.addColorStop(0.5, `hsla(${col.hue},55%,32%,${alpha*1.6})`);
+    grd.addColorStop(0.65,`hsla(${col.hue},45%,28%,${alpha})`);
+    grd.addColorStop(1,'transparent');
+    bgX.fillStyle = grd;
+    bgX.fillRect(0,0,W,H);
+  });
+
+  const gx=(0.5+px)*W, gy=(0.38+py)*H;
+  const pool=bgX.createRadialGradient(gx,gy,0,gx,gy,Math.min(W,H)*0.55);
+  const pb=0.018+0.006*Math.sin(t*0.0005);
+  pool.addColorStop(0,`hsla(210,40%,22%,${pb})`);
+  pool.addColorStop(0.5,`hsla(215,35%,15%,${pb*0.5})`);
+  pool.addColorStop(1,'transparent');
+  bgX.fillStyle=pool; bgX.fillRect(0,0,W,H);
+
+  [...stars,...keyStars].forEach(s=>{
+    const pulse=Math.sin(t*s.sp+s.ph);
+    const a=s.a*(0.55+0.45*pulse);
+    if(s.r>1.5){
+      const g=bgX.createRadialGradient(s.x*W,s.y*H,0,s.x*W,s.y*H,s.r*5);
+      g.addColorStop(0,`rgba(210,220,230,${a*0.5})`);
+      g.addColorStop(1,'transparent');
+      bgX.fillStyle=g;
+      bgX.fillRect(s.x*W-s.r*5,s.y*H-s.r*5,s.r*10,s.r*10);
+    }
+    bgX.beginPath();
+    bgX.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+    bgX.fillStyle=`rgba(215,210,200,${a})`;
+    bgX.fill();
+  });
+
+  drawTails();
+
+  /* spawn shooting stars on schedule */
+  noteStars.forEach(ns => {
+    if (!ns.spawned && t >= ns.delay) {
+      spawnShootingStar(ns);
+    }
+  });
+
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+/* ─── Ash particles ─── */
+const pl = document.getElementById('particles-layer');
+function spawnParticle() {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const dur = 8 + Math.random()*14, delay = Math.random()*6;
+  p.style.cssText = `left:${10+Math.random()*80}%;top:${55+Math.random()*35}%;--dx:${(Math.random()-.5)*40}px;width:${0.6+Math.random()*1.1}px;height:${0.6+Math.random()*1.1}px;animation-duration:${dur}s;animation-delay:${delay}s;`;
+  pl.appendChild(p);
+  setTimeout(()=>p.remove(),(dur+delay)*1000+300);
+}
+for(let i=0;i<22;i++) spawnParticle();
+setInterval(spawnParticle,1600);
+
+/* ─── Fade in ─── */
+document.body.style.opacity='0';
+document.body.style.transition='opacity 2.2s ease';
+setTimeout(()=>{document.body.style.opacity='1';},80);
+
+})();
+</script>
 </body>
 </html>
