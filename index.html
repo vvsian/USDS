@@ -1,3 +1,12 @@
+Here is the updated code. To fix the issue where text overflows the screen on mobile, I made a few smart layout adjustments for smaller viewports:
+
+* **Responsive Width & Text Wrapping:** The ornamental divider lines and text sections dynamically scale or wrap gracefully instead of holding onto rigid pixel widths (`360px`).
+* **Mobile-Friendly Safe Zones:** On mobile, the star coordinates are mathematically pushed away from the extreme left and right edges. This stops the text popups from leaking past the edges of your screen.
+* **Touch Interactions:** Hover states don't exist nicely on phones. The code now hides the permanent custom mouse cursor elements on touch devices and implements a simple, clean "tap to read" trigger for mobile screens.
+
+Here is the complete, drop-in replacement file:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +27,11 @@
     width: 100%; height: 100%;
     background: #000;
     overflow: hidden;
-    cursor: none;
+  }
+
+  /* Hide cursor adjustments for desktop later via JS if touch is present */
+  @media (pointer: fine) {
+    html, body { cursor: none; }
   }
 
   canvas#bg {
@@ -32,6 +45,7 @@
     border: 1px solid rgba(232,228,220,0.6);
     border-radius: 50%; pointer-events: none;
     transform: translate(-50%,-50%); z-index: 9999;
+    display: none;
   }
   #cursor-trail {
     position: fixed; width: 28px; height: 28px;
@@ -39,18 +53,25 @@
     border-radius: 50%; pointer-events: none;
     transform: translate(-50%,-50%); z-index: 9998;
     transition: left 0.15s ease-out, top 0.15s ease-out;
+    display: none;
+  }
+  @media (pointer: fine) {
+    #cursor, #cursor-trail { display: block; }
   }
 
   #scene {
     position: relative; z-index: 10;
     width: 100vw; height: 100vh;
     display: flex; align-items: center; justify-content: center;
+    padding: 0 20px;
   }
 
   #content {
     text-align: center;
     animation: fadeUp 3.5s ease-out 1.2s both;
     display: flex; flex-direction: column; align-items: center;
+    width: 100%;
+    max-width: 500px;
   }
 
   @keyframes fadeUp {
@@ -60,7 +81,7 @@
 
   .line-ornament {
     display: flex; align-items: center; gap: 12px;
-    width: 360px; animation: fadeIn 2.5s ease-out 2s both;
+    width: 100%; max-width: 360px; animation: fadeIn 2.5s ease-out 2s both;
   }
   .line-ornament.top  { margin-bottom: 40px; }
   .line-ornament.bottom { margin-top: 40px; }
@@ -71,9 +92,10 @@
 
   h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-weight: 300; font-size: clamp(30px, 5vw, 52px);
+    font-weight: 300; font-size: clamp(28px, 7vw, 52px);
     letter-spacing: 0.38em; color: var(--white);
     text-transform: lowercase; margin-bottom: 22px;
+    padding-left: 0.38em; /* offsets tracking center bias */
     animation: textBreathe 9s ease-in-out 4s infinite;
   }
 
@@ -84,13 +106,17 @@
 
   .sub1 {
     font-family: 'Courier Prime', monospace;
-    font-size: clamp(11px,1.5vw,13px); letter-spacing: 0.26em;
-    color: var(--dim); text-transform: lowercase; margin-bottom: 10px;
+    font-size: clamp(11px, 3.2vw, 13px); letter-spacing: 0.22em;
+    color: var(--dim); text-transform: lowercase; margin-bottom: 12px;
+    padding-left: 0.22em;
+    line-height: 1.5;
   }
   .sub2 {
     font-family: 'Courier Prime', monospace;
-    font-size: clamp(10px,1.3vw,12px); letter-spacing: 0.2em;
+    font-size: clamp(10px, 2.8vw, 12px); letter-spacing: 0.18em;
     color: var(--faint); text-transform: lowercase; font-style: italic;
+    padding-left: 0.18em;
+    line-height: 1.5;
   }
 
   #vignette {
@@ -116,8 +142,12 @@
   .note-star {
     position: absolute;
     pointer-events: all;
-    cursor: none;
     transform: translate(-50%, -50%);
+    padding: 10px; /* makes tapping much easier on phone screens */
+  }
+  
+  @media (pointer: fine) {
+    .note-star { cursor: none; }
   }
 
   .note-star .star-dot {
@@ -129,7 +159,7 @@
     margin: auto;
   }
 
-  .note-star:hover .star-dot {
+  .note-star:hover .star-dot, .note-star.active .star-dot {
     background: rgba(240, 235, 220, 1);
     box-shadow: 0 0 14px 5px rgba(220,210,190,0.7);
   }
@@ -146,10 +176,13 @@
     pointer-events: none;
     transition: color 0.4s ease, bottom 0.4s ease;
     text-shadow: 0 0 18px rgba(180,200,220,0.5);
+    background: rgba(0, 0, 0, 0.6);
+    padding: 4px 8px;
+    border-radius: 4px;
   }
 
-  .note-star:hover .label {
-    color: rgba(232, 228, 220, 0.72);
+  .note-star:hover .label, .note-star.active .label {
+    color: rgba(232, 228, 220, 0.85);
     bottom: calc(100% + 16px);
   }
 
@@ -248,35 +281,42 @@ const NOTE_MESSAGES = [
   "this is pointless.",
 ];
 
-/* spread stars around, avoiding dead center */
+/* spread stars around, avoiding center and tight side edges on mobile */
 function randomNotePos() {
-  const margin = 0.08;
+  const isMobile = window.innerWidth < 768;
+  // Use a wider margin on mobile side edges to stop text boxes going offscreen
+  const xMargin = isMobile ? 0.22 : 0.08; 
+  const yMargin = 0.10;
+  
   let x, y;
   do {
-    x = margin + Math.random() * (1 - 2*margin);
-    y = margin + Math.random() * (1 - 2*margin);
+    x = xMargin + Math.random() * (1 - 2*xMargin);
+    y = yMargin + Math.random() * (1 - 2*yMargin);
     const dx = x - 0.5, dy = y - 0.5;
-    // keep away from center poem area
-    if (Math.abs(dx) > 0.22 || Math.abs(dy) > 0.18) break;
+    
+    // keep away from central text area layout
+    const forbiddenX = isMobile ? 0.35 : 0.22;
+    const forbiddenY = isMobile ? 0.28 : 0.18;
+    
+    if (Math.abs(dx) > forbiddenX || Math.abs(dy) > forbiddenY) break;
   } while (true);
   return { x, y };
 }
 
 /* ─── Shooting star state ─── */
-// Each note star is first a shooting star that travels to its resting pos
 const noteStars = NOTE_MESSAGES.map((msg, i) => {
   const pos = randomNotePos();
   return {
     msg,
-    tx: pos.x,   // target x (0-1)
-    ty: pos.y,   // target y (0-1)
-    sx: null,    // start x
-    sy: null,    // start y
-    cx: pos.x,   // current x
-    cy: pos.y,   // current y
-    progress: 1, // 0 = start of flight, 1 = arrived
+    tx: pos.x,   
+    ty: pos.y,   
+    sx: null,    
+    sy: null,    
+    cx: pos.x,   
+    cy: pos.y,   
+    progress: 1, 
     arrived: false,
-    delay: 3500 + i * 1800, // stagger
+    delay: 3500 + i * 1800, 
     spawned: false,
     brightness: 0,
   };
@@ -284,7 +324,6 @@ const noteStars = NOTE_MESSAGES.map((msg, i) => {
 
 /* ─── DOM note stars (created after arrival) ─── */
 const noteLayer = document.getElementById('note-layer');
-const noteDOMs = [];
 
 function createNoteDOM(ns) {
   const el = document.createElement('div');
@@ -299,31 +338,42 @@ function createNoteDOM(ns) {
 
   const lbl = document.createElement('div');
   lbl.className = 'label';
-  // handle newlines
   lbl.innerHTML = ns.msg.replace(/\n/g, '<br>');
 
   el.appendChild(dot);
   el.appendChild(lbl);
+  
+  // Mobile tap handling toggle
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const wasActive = el.classList.contains('active');
+    document.querySelectorAll('.note-star').forEach(s => s.classList.remove('active'));
+    if (!wasActive) {
+      el.classList.add('active');
+    }
+  });
+
   noteLayer.appendChild(el);
 
-  // fade dot in
   requestAnimationFrame(() => {
     requestAnimationFrame(() => { dot.style.opacity = '1'; });
   });
-
-  noteDOMs.push(el);
 }
+
+// Clear active messages if tapping empty background spaces on a phone
+document.addEventListener('click', () => {
+  document.querySelectorAll('.note-star').forEach(s => s.classList.remove('active'));
+});
 
 /* ─── Tail drawing ─── */
 const activeTails = [];
 
 function spawnShootingStar(ns) {
-  // come from a random edge, biased top/sides
   const edge = Math.random();
   let sx, sy;
-  if (edge < 0.5) { sx = Math.random(); sy = -0.05; }        // top
-  else if (edge < 0.75) { sx = -0.05; sy = Math.random()*0.6; } // left
-  else { sx = 1.05; sy = Math.random()*0.6; }                 // right
+  if (edge < 0.5) { sx = Math.random(); sy = -0.05; }        
+  else if (edge < 0.75) { sx = -0.05; sy = Math.random()*0.6; } 
+  else { sx = 1.05; sy = Math.random()*0.6; }                 
 
   ns.sx = sx; ns.sy = sy;
   ns.cx = sx; ns.cy = sy;
@@ -332,7 +382,7 @@ function spawnShootingStar(ns) {
 
   activeTails.push({
     ns,
-    trail: [],       // array of {x,y,a}
+    trail: [],       
     done: false,
   });
 }
@@ -345,7 +395,6 @@ function drawTails() {
     const ns = tail.ns;
     if (ns.arrived) return;
 
-    // eased progress
     ns.progress += 0.012;
     if (ns.progress >= 1) {
       ns.progress = 1;
@@ -361,11 +410,9 @@ function drawTails() {
 
     const px = ns.cx * W, py = ns.cy * H;
 
-    // store trail point
     tail.trail.push({ x: px, y: py, a: 0.85 });
     if (tail.trail.length > 28) tail.trail.shift();
 
-    // draw tail
     for (let i = 1; i < tail.trail.length; i++) {
       const p0 = tail.trail[i-1], p1 = tail.trail[i];
       const frac = i / tail.trail.length;
@@ -377,14 +424,12 @@ function drawTails() {
       tailX.stroke();
     }
 
-    // draw head
     tailX.beginPath();
     tailX.arc(px, py, 2.2, 0, Math.PI*2);
     tailX.fillStyle = 'rgba(230,225,210,0.95)';
     tailX.fill();
   });
 
-  // cleanup done tails
   for (let i = activeTails.length-1; i >= 0; i--) {
     if (activeTails[i].done) activeTails.splice(i,1);
   }
@@ -448,7 +493,6 @@ function draw(ts) {
 
   drawTails();
 
-  /* spawn shooting stars on schedule */
   noteStars.forEach(ns => {
     if (!ns.spawned && t >= ns.delay) {
       spawnShootingStar(ns);
@@ -481,3 +525,5 @@ setTimeout(()=>{document.body.style.opacity='1';},80);
 </script>
 </body>
 </html>
+
+```
