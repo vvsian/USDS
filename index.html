@@ -1,12 +1,3 @@
-Here is the updated code. To fix the issue where text overflows the screen on mobile, I made a few smart layout adjustments for smaller viewports:
-
-* **Responsive Width & Text Wrapping:** The ornamental divider lines and text sections dynamically scale or wrap gracefully instead of holding onto rigid pixel widths (`360px`).
-* **Mobile-Friendly Safe Zones:** On mobile, the star coordinates are mathematically pushed away from the extreme left and right edges. This stops the text popups from leaking past the edges of your screen.
-* **Touch Interactions:** Hover states don't exist nicely on phones. The code now hides the permanent custom mouse cursor elements on touch devices and implements a simple, clean "tap to read" trigger for mobile screens.
-
-Here is the complete, drop-in replacement file:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,11 +18,7 @@ Here is the complete, drop-in replacement file:
     width: 100%; height: 100%;
     background: #000;
     overflow: hidden;
-  }
-
-  /* Hide cursor adjustments for desktop later via JS if touch is present */
-  @media (pointer: fine) {
-    html, body { cursor: none; }
+    cursor: none;
   }
 
   canvas#bg {
@@ -45,7 +32,6 @@ Here is the complete, drop-in replacement file:
     border: 1px solid rgba(232,228,220,0.6);
     border-radius: 50%; pointer-events: none;
     transform: translate(-50%,-50%); z-index: 9999;
-    display: none;
   }
   #cursor-trail {
     position: fixed; width: 28px; height: 28px;
@@ -53,25 +39,18 @@ Here is the complete, drop-in replacement file:
     border-radius: 50%; pointer-events: none;
     transform: translate(-50%,-50%); z-index: 9998;
     transition: left 0.15s ease-out, top 0.15s ease-out;
-    display: none;
-  }
-  @media (pointer: fine) {
-    #cursor, #cursor-trail { display: block; }
   }
 
   #scene {
     position: relative; z-index: 10;
     width: 100vw; height: 100vh;
     display: flex; align-items: center; justify-content: center;
-    padding: 0 20px;
   }
 
   #content {
     text-align: center;
     animation: fadeUp 3.5s ease-out 1.2s both;
     display: flex; flex-direction: column; align-items: center;
-    width: 100%;
-    max-width: 500px;
   }
 
   @keyframes fadeUp {
@@ -81,7 +60,7 @@ Here is the complete, drop-in replacement file:
 
   .line-ornament {
     display: flex; align-items: center; gap: 12px;
-    width: 100%; max-width: 360px; animation: fadeIn 2.5s ease-out 2s both;
+    width: 360px; animation: fadeIn 2.5s ease-out 2s both;
   }
   .line-ornament.top  { margin-bottom: 40px; }
   .line-ornament.bottom { margin-top: 40px; }
@@ -92,10 +71,9 @@ Here is the complete, drop-in replacement file:
 
   h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-weight: 300; font-size: clamp(28px, 7vw, 52px);
+    font-weight: 300; font-size: clamp(30px, 5vw, 52px);
     letter-spacing: 0.38em; color: var(--white);
     text-transform: lowercase; margin-bottom: 22px;
-    padding-left: 0.38em; /* offsets tracking center bias */
     animation: textBreathe 9s ease-in-out 4s infinite;
   }
 
@@ -106,17 +84,13 @@ Here is the complete, drop-in replacement file:
 
   .sub1 {
     font-family: 'Courier Prime', monospace;
-    font-size: clamp(11px, 3.2vw, 13px); letter-spacing: 0.22em;
-    color: var(--dim); text-transform: lowercase; margin-bottom: 12px;
-    padding-left: 0.22em;
-    line-height: 1.5;
+    font-size: clamp(11px,1.5vw,13px); letter-spacing: 0.26em;
+    color: var(--dim); text-transform: lowercase; margin-bottom: 10px;
   }
   .sub2 {
     font-family: 'Courier Prime', monospace;
-    font-size: clamp(10px, 2.8vw, 12px); letter-spacing: 0.18em;
+    font-size: clamp(10px,1.3vw,12px); letter-spacing: 0.2em;
     color: var(--faint); text-transform: lowercase; font-style: italic;
-    padding-left: 0.18em;
-    line-height: 1.5;
   }
 
   #vignette {
@@ -136,18 +110,13 @@ Here is the complete, drop-in replacement file:
     100% { transform: translateY(-100px) translateX(var(--dx)); opacity: 0; }
   }
 
-  /* ── Note star overlay layer ── */
   #note-layer { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
 
   .note-star {
     position: absolute;
     pointer-events: all;
+    cursor: none;
     transform: translate(-50%, -50%);
-    padding: 10px; /* makes tapping much easier on phone screens */
-  }
-  
-  @media (pointer: fine) {
-    .note-star { cursor: none; }
   }
 
   .note-star .star-dot {
@@ -159,7 +128,7 @@ Here is the complete, drop-in replacement file:
     margin: auto;
   }
 
-  .note-star:hover .star-dot, .note-star.active .star-dot {
+  .note-star:hover .star-dot {
     background: rgba(240, 235, 220, 1);
     box-shadow: 0 0 14px 5px rgba(220,210,190,0.7);
   }
@@ -176,17 +145,13 @@ Here is the complete, drop-in replacement file:
     pointer-events: none;
     transition: color 0.4s ease, bottom 0.4s ease;
     text-shadow: 0 0 18px rgba(180,200,220,0.5);
-    background: rgba(0, 0, 0, 0.6);
-    padding: 4px 8px;
-    border-radius: 4px;
   }
 
-  .note-star:hover .label, .note-star.active .label {
-    color: rgba(232, 228, 220, 0.85);
+  .note-star:hover .label {
+    color: rgba(232, 228, 220, 0.72);
     bottom: calc(100% + 16px);
   }
 
-  /* tail canvas for shooting star animation */
   #tail-layer {
     position: fixed; inset: 0; z-index: 19;
     pointer-events: none;
@@ -221,7 +186,7 @@ Here is the complete, drop-in replacement file:
 <script>
 (function(){
 
-/* ─── Cursor ─── */
+
 const cur = document.getElementById('cursor');
 const trl = document.getElementById('cursor-trail');
 document.addEventListener('mousemove', e => {
@@ -229,14 +194,14 @@ document.addEventListener('mousemove', e => {
   trl.style.left = e.clientX + 'px'; trl.style.top = e.clientY + 'px';
 });
 
-/* ─── Mouse parallax ─── */
+
 let mx = 0.5, my = 0.5, smx = 0.5, smy = 0.5;
 document.addEventListener('mousemove', e => {
   mx = e.clientX / window.innerWidth;
   my = e.clientY / window.innerHeight;
 });
 
-/* ─── Main canvas ─── */
+
 const bgC = document.getElementById('bg');
 const bgX = bgC.getContext('2d');
 const tailC = document.getElementById('tail-layer');
@@ -249,13 +214,13 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-/* ─── Background stars ─── */
+
 const stars = [];
 for (let i = 0; i < 260; i++) stars.push({ x: Math.random(), y: Math.random(), r: Math.random()*1.0+0.15, a: Math.random()*0.55+0.08, sp: Math.random()*0.015+0.003, ph: Math.random()*Math.PI*2 });
 const keyStars = [];
 for (let i = 0; i < 12; i++) keyStars.push({ x: Math.random(), y: Math.random(), r: Math.random()*1.8+1.0, a: Math.random()*0.7+0.3, sp: Math.random()*0.008+0.002, ph: Math.random()*Math.PI*2 });
 
-/* ─── Aurora ─── */
+
 const columns = [
   { x:0.18, hue:215, width:0.22, speed:0.00018, phase:0 },
   { x:0.45, hue:200, width:0.30, speed:0.00012, phase:1.8 },
@@ -263,7 +228,7 @@ const columns = [
   { x:0.88, hue:190, width:0.16, speed:0.00016, phase:5.0 },
 ];
 
-/* ─── Note star messages ─── */
+
 const NOTE_MESSAGES = [
   "too late to be sorry, right?",
   "july 4, 3:44 AM 2025",
@@ -281,29 +246,20 @@ const NOTE_MESSAGES = [
   "this is pointless.",
 ];
 
-/* spread stars around, avoiding center and tight side edges on mobile */
+
 function randomNotePos() {
-  const isMobile = window.innerWidth < 768;
-  // Use a wider margin on mobile side edges to stop text boxes going offscreen
-  const xMargin = isMobile ? 0.22 : 0.08; 
-  const yMargin = 0.10;
-  
+  const margin = 0.08;
   let x, y;
   do {
-    x = xMargin + Math.random() * (1 - 2*xMargin);
-    y = yMargin + Math.random() * (1 - 2*yMargin);
+    x = margin + Math.random() * (1 - 2*margin);
+    y = margin + Math.random() * (1 - 2*margin);
     const dx = x - 0.5, dy = y - 0.5;
-    
-    // keep away from central text area layout
-    const forbiddenX = isMobile ? 0.35 : 0.22;
-    const forbiddenY = isMobile ? 0.28 : 0.18;
-    
-    if (Math.abs(dx) > forbiddenX || Math.abs(dy) > forbiddenY) break;
+    if (Math.abs(dx) > 0.22 || Math.abs(dy) > 0.18) break;
   } while (true);
   return { x, y };
 }
 
-/* ─── Shooting star state ─── */
+
 const noteStars = NOTE_MESSAGES.map((msg, i) => {
   const pos = randomNotePos();
   return {
@@ -314,7 +270,7 @@ const noteStars = NOTE_MESSAGES.map((msg, i) => {
     sy: null,    
     cx: pos.x,   
     cy: pos.y,   
-    progress: 1, 
+    progress: 1,
     arrived: false,
     delay: 3500 + i * 1800, 
     spawned: false,
@@ -322,8 +278,9 @@ const noteStars = NOTE_MESSAGES.map((msg, i) => {
   };
 });
 
-/* ─── DOM note stars (created after arrival) ─── */
+
 const noteLayer = document.getElementById('note-layer');
+const noteDOMs = [];
 
 function createNoteDOM(ns) {
   const el = document.createElement('div');
@@ -338,42 +295,31 @@ function createNoteDOM(ns) {
 
   const lbl = document.createElement('div');
   lbl.className = 'label';
+  
   lbl.innerHTML = ns.msg.replace(/\n/g, '<br>');
 
   el.appendChild(dot);
   el.appendChild(lbl);
-  
-  // Mobile tap handling toggle
-  el.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const wasActive = el.classList.contains('active');
-    document.querySelectorAll('.note-star').forEach(s => s.classList.remove('active'));
-    if (!wasActive) {
-      el.classList.add('active');
-    }
-  });
-
   noteLayer.appendChild(el);
 
+  
   requestAnimationFrame(() => {
     requestAnimationFrame(() => { dot.style.opacity = '1'; });
   });
+
+  noteDOMs.push(el);
 }
 
-// Clear active messages if tapping empty background spaces on a phone
-document.addEventListener('click', () => {
-  document.querySelectorAll('.note-star').forEach(s => s.classList.remove('active'));
-});
 
-/* ─── Tail drawing ─── */
 const activeTails = [];
 
 function spawnShootingStar(ns) {
+ 
   const edge = Math.random();
   let sx, sy;
   if (edge < 0.5) { sx = Math.random(); sy = -0.05; }        
   else if (edge < 0.75) { sx = -0.05; sy = Math.random()*0.6; } 
-  else { sx = 1.05; sy = Math.random()*0.6; }                 
+  else { sx = 1.05; sy = Math.random()*0.6; }                
 
   ns.sx = sx; ns.sy = sy;
   ns.cx = sx; ns.cy = sy;
@@ -395,6 +341,7 @@ function drawTails() {
     const ns = tail.ns;
     if (ns.arrived) return;
 
+    // eased progress
     ns.progress += 0.012;
     if (ns.progress >= 1) {
       ns.progress = 1;
@@ -410,9 +357,11 @@ function drawTails() {
 
     const px = ns.cx * W, py = ns.cy * H;
 
+    
     tail.trail.push({ x: px, y: py, a: 0.85 });
     if (tail.trail.length > 28) tail.trail.shift();
 
+    
     for (let i = 1; i < tail.trail.length; i++) {
       const p0 = tail.trail[i-1], p1 = tail.trail[i];
       const frac = i / tail.trail.length;
@@ -424,18 +373,20 @@ function drawTails() {
       tailX.stroke();
     }
 
+   
     tailX.beginPath();
     tailX.arc(px, py, 2.2, 0, Math.PI*2);
     tailX.fillStyle = 'rgba(230,225,210,0.95)';
     tailX.fill();
   });
 
+  
   for (let i = activeTails.length-1; i >= 0; i--) {
     if (activeTails[i].done) activeTails.splice(i,1);
   }
 }
 
-/* ─── Main draw loop ─── */
+
 let t = 0, last = 0;
 
 function draw(ts) {
@@ -493,6 +444,7 @@ function draw(ts) {
 
   drawTails();
 
+  
   noteStars.forEach(ns => {
     if (!ns.spawned && t >= ns.delay) {
       spawnShootingStar(ns);
@@ -503,7 +455,7 @@ function draw(ts) {
 }
 requestAnimationFrame(draw);
 
-/* ─── Ash particles ─── */
+
 const pl = document.getElementById('particles-layer');
 function spawnParticle() {
   const p = document.createElement('div');
@@ -516,7 +468,7 @@ function spawnParticle() {
 for(let i=0;i<22;i++) spawnParticle();
 setInterval(spawnParticle,1600);
 
-/* ─── Fade in ─── */
+
 document.body.style.opacity='0';
 document.body.style.transition='opacity 2.2s ease';
 setTimeout(()=>{document.body.style.opacity='1';},80);
@@ -525,5 +477,3 @@ setTimeout(()=>{document.body.style.opacity='1';},80);
 </script>
 </body>
 </html>
-
-```
